@@ -30,7 +30,7 @@ dependencies {
     "implementation"("com.google.guava:guava:31.1-jre")
     "implementation"("com.google.code.gson:gson:2.10.1")
     "implementation"("org.slf4j:slf4j-api:2.0.1")
-    "implementation"(rootProject)
+    "implementation"(project(":"))
 }
 
 tasks.processResources {

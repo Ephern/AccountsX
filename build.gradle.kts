@@ -19,7 +19,7 @@ buildscript {
     }
 }
 
-rootProject.version = properties["version"]!!
+rootProject.version = providers.gradleProperty("version").get()
 
 repositories {
     maven(url = "https://maven.fabricmc.net/")
@@ -55,8 +55,8 @@ val universal = tasks.register("universal") {
             adapters.resolve(type).list()!!.asIterable().map { version ->
                 when (type) {
                     "authlib" -> Adapter("adapters:$type:$version", "jar", "authlib")
-                    "mc" -> Adapter("adapters:$type:$version", "remapJar", "mc")
-                    else -> throw IllegalArgumentException("Unknown type: $type");
+                    "mc" -> Adapter("adapters:$type:$version", if (version.substringBefore('.').toIntOrNull()?.let { it >= 26 } == true) "jar" else "remapJar", "mc")
+                    else -> throw IllegalArgumentException("Unknown type: $type")
                 }
             }
         }
@@ -68,7 +68,7 @@ val universal = tasks.register("universal") {
         adapters.all { adapter -> project(adapter.project).tasks.getByName(adapter.builder).state.upToDate }
     }
 
-    val output = project.layout.buildDirectory.file("libs/${project.name}-${project.version}-universal.jar");
+    val output = project.layout.buildDirectory.file("libs/${project.name}-${project.version}-universal.jar")
     outputs.file(output)
 
     doLast {

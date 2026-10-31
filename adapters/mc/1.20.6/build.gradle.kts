@@ -1,5 +1,5 @@
 plugins {
-    id("fabric-loom") version "1.10-SNAPSHOT"
+    id("net.fabricmc.fabric-loom-remap") version "1.19.3"
     id("accountsx.mc.adapter")
 }
 
